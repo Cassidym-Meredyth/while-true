@@ -1,3 +1,6 @@
+## Системный контекст
+
+```mermaid
 flowchart LR
   subgraph Users["Пользователи"]
     F["Прораб"]
@@ -42,3 +45,4 @@ flowchart LR
 
   BFF <-->|"метрики/логи"| MON
   KC  <-->|"метрики/логи"| MON
+
