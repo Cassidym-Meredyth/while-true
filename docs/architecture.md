@@ -1,5 +1,9 @@
-## Системный контекст
+# Архитектура (MVP)
 
+## Обзор
+Кратко: SPA/PWA → FastAPI → PostgreSQL+PostGIS/S3/Keycloak + OCR.
+
+## Диаграмма (mermaid)
 ```mermaid
 flowchart LR
   subgraph Users["Пользователи"]
@@ -45,4 +49,5 @@ flowchart LR
 
   BFF <-->|"метрики/логи"| MON
   KC  <-->|"метрики/логи"| MON
+
 
