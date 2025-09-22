@@ -1,37 +1,29 @@
-## Системный контекст
-
-```mermaid
 flowchart LR
   subgraph Users["Пользователи"]
     F["Прораб"]
-    Q["Служба строительного контроля (QC)"]
-    I["Инспектор контрольного органа"]
+    Q["Служба строит. контроля (QC)"]
+    I["Инспектор контроля"]
     A["Админ"]
   end
 
   subgraph Frontend["Веб/моб. приложение (SPA/PWA)"]
-    UI["UI/State (форма ТТН, график, карта)"]
-    OFF["Offline cache + Sync"]
+    UI["UI/State (карточки, график, карта, ТТН)"]
+    OFF["Offline cache + Sync (очередь, retry)"]
   end
 
   subgraph IAM["Keycloak (OIDC)"]
     KC[/"Realm icj\nRoles: foreman, qc, inspector, admin"/]
   end
 
-  subgraph API["Backend API (FastAPI/BFF)"]
-    BFF["Auth, RBAC, REST/GraphQL proxy,\nGeo-валидация, оркестрация"]
+  subgraph API["Backend API (FastAPI, REST)"]
+    BFF["Auth/RBAC, доменная логика,\nгео-валидация, файлы, OCR-оркестрация"]
   end
 
-  subgraph Services["Сервисы"]
-    OCR["OCR-сервис (OpenCV + Tesseract)"]
-    S3[("S3/MinIO (фото/документы)")]
+  subgraph Data["Хранилища/сервисы"]
     PG[("PostgreSQL + PostGIS")]
-    DS[("DataSpace CE (опц.)\nGraphQL CRUD по модели")]
-  end
-
-  subgraph Platform["Платформа (K8s/Ingress/CI-CD)"]
-    MON["Логи/Мониторинг"]
-    TLS["TLS/Ingress"]
+    S3[("S3/MinIO — фото/документы")]
+    OCR["OCR-сервис (OpenCV + Tesseract)"]
+    MON["Мониторинг/Логи"]
   end
 
   F --> UI
@@ -41,15 +33,12 @@ flowchart LR
 
   UI --> OFF
   UI <-->|"OIDC Code + PKCE"| KC
-  UI -->|"HTTPS JSON"| BFF
-  BFF -->|"JWT валидация (JWKS)"| KC
+  UI -->|"HTTPS/JSON"| BFF
+  BFF -->|"JWKS валидация JWT"| KC
 
-  BFF -->|"файлы"| S3
-  BFF -->|"распознать ТТН"| OCR
   BFF -->|"CRUD/SQL"| PG
-  BFF -->|"GraphQL (опц.)"| DS
+  BFF -->|"presigned URLs"| S3
+  BFF -->|"распознать ТТН"| OCR
 
-  BFF <-->|"метрики"| MON
-  KC  <-->|"метрики"| MON
-
-  UI -. "offline queue / retry" .-> UI
+  BFF <-->|"метрики/логи"| MON
+  KC  <-->|"метрики/логи"| MON
