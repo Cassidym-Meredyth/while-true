@@ -30,9 +30,10 @@
    APP_USER_PASSWORD=CHANGE_ME_APP
    ```
 ## Сборка и запуск
+```
 docker compose up -d --build
 docker compose logs -f db (вывод логов, можно не юзать)
-
+```
 ## Подключение 
 **pspl с хоста:**
 psql -h 127.0.0.1 -p 5433 -U postgres -d ${POSTGRES_DB}
@@ -41,14 +42,15 @@ psql -h 127.0.0.1 -p 5433 -U postgres -d ${POSTGRES_DB}
 docker exec -it dbforsite-postgres psql -U postgres -d ${POSTGRES_DB}
 
 **Через pgAdmin**
+```
 Host: 127.0.0.1
 Port: 5433
 DB: dbforsite (или postgres)
 User: postgres
 Pass: из .env
-
+```
 **DBeaver**
-В DBeaver:
+```
 Database → New Database Connection
 Выбираешь PostgreSQL
 Вводишь:
@@ -58,6 +60,6 @@ Database: dbforsite (или что у тебя указано в .env)
 User: postgres (или migrator / app_user)
 Password: из .env
 Жмёшь Test Connection → должно быть Success.
-
+```
 
 ## Если при запуске контейнера выскакивает ошибка о занятом порте 5433, то в файле docker-compose.yaml поменяйте порт на свободный
