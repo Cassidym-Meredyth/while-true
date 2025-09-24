@@ -19,6 +19,7 @@
 
 1. Установить Docker Desktop.
 2. Создать **локальный** `.env` (на основе `.env.example`) и **не коммитить** его!!!!:
+   ```
    POSTGRES_DB=dbforsite
    POSTGRES_USER=postgres
    POSTGRES_PASSWORD=CHANGE_ME_POSTGRES
@@ -27,7 +28,7 @@
    MIGRATOR_PASSWORD=CHANGE_ME_MIGRATOR
    APP_USER=app_user
    APP_USER_PASSWORD=CHANGE_ME_APP
-   
+   ```
 ## Сборка и запуск
 docker compose up -d --build
 docker compose logs -f db (вывод логов, можно не юзать)
