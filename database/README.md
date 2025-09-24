@@ -3,15 +3,15 @@
 Контейнеризированная БД PostgreSQL 17 с PostGIS. Авто-инициализация создаёт роли `migrator`, `app_user`, схему `app`, расширения и таблицы под ТЗ.
 
 ## Структура
-├─ Dockerfile
-├─ docker-compose.yml
-├─ .env.example
-├─ init/
-│ ├─ 01_roles.sh
-│ ├─ 02_schema_extensions.sql
-│ └─ 03_tables.sql
-├─ backups/ # дампы сюда (в .gitignore)
-└─ README.md
+├── 📄 README.md # описание проекта
+├── 📄 docker-compose.yaml # запуск контейнера PostgreSQL
+├── 📄 Dockerfile # сборка образа с кастомизацией
+├── 📄 .env.example # пример переменных окружения
+├── 📄 .gitignore # исключения для Git
+├── 📂 init/ # скрипты и SQL для инициализации БД
+│ ├── 01_roles.sh
+│ ├── 02_schema_extensions.sql
+│ └── 03_tables.sql
 
 
 ## Быстрый старт
