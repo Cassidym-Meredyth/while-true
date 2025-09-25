@@ -16,7 +16,6 @@ func main() {
 	issuer := os.Getenv("KEYCLOAK_ISSUER")
 	aud := os.Getenv("KEYCLOAK_AUDIENCE")
 
-	// покажем, что переменные реально подхватились
 	fmt.Println("ISSUER:", issuer)
 	fmt.Println("AUDIENCE:", aud)
 	if issuer == "" {
