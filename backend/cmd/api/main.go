@@ -1,48 +1,82 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
-	"github.com/Cassidym-Meredyth/while-true/backend/internal/auth"
-	"github.com/gin-gonic/gin"
+	"github.com/Cassidym-Meredyth/while-true/backend/internal/db"
+	httpx "github.com/Cassidym-Meredyth/while-true/backend/internal/http"
+
 	"github.com/joho/godotenv"
 )
 
-func init() { _ = godotenv.Load(".env") }
-
 func main() {
+	_ = godotenv.Load(".env")
+
 	issuer := os.Getenv("KEYCLOAK_ISSUER")
 	aud := os.Getenv("KEYCLOAK_AUDIENCE")
-
-	fmt.Println("ISSUER:", issuer)
-	fmt.Println("AUDIENCE:", aud)
-	if issuer == "" {
-		panic("KEYCLOAK_ISSUER is empty — проверь .env или окружение")
+	dsn := os.Getenv("DATABASE_URL")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8081"
 	}
 
-	r := gin.Default()
-	_ = r.SetTrustedProxies(nil)
-	r.GET("/healthz", func(c *gin.Context) { c.String(200, "ok") })
+	if issuer == "" {
+		log.Fatal("KEYCLOAK_ISSUER is empty")
+	}
+	if dsn == "" {
+		log.Fatal("DATABASE_URL is empty")
+	}
 
-	oidc := auth.NewOIDCMiddleware(issuer, aud, false)
-	api := r.Group("/api", oidc)
+	pool, err := db.NewPool(dsn)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer pool.Close()
 
-	api.GET("/ping", func(c *gin.Context) {
-		claims, roles, _ := auth.FromContext(c)
-		c.JSON(http.StatusOK, gin.H{
-			"ok":    true,
-			"user":  claims.PreferredName,
-			"roles": roles,
-			"sub":   claims.Subject,
-			"email": claims.Email,
-		})
+	// быстрый ping
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+	if err := pool.Ping(ctx); err != nil {
+		log.Fatalf("db ping failed: %v", err)
+	}
+
+	r := httpx.NewRouter(httpx.Options{
+		DB:               pool,
+		KeycloakIssuer:   issuer,
+		KeycloakAudience: aud,
+		PublicRoutes:     true, // ← на время локальных тестов
 	})
 
-	api.GET("/qc/objects", auth.RequireRoles("qc", "admin"), func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"data": "only for qc/admin"})
-	})
+	srv := &http.Server{
+		Addr:         ":" + port,
+		Handler:      r,
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 15 * time.Second,
+		IdleTimeout:  60 * time.Second,
+	}
 
-	_ = r.Run(":8081")
+	go func() {
+		log.Printf("HTTP server started on :%s", port)
+		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("listen: %v", err)
+		}
+	}()
+
+	// graceful shutdown
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+	log.Println("shutting down...")
+	ctxSh, cancelSh := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancelSh()
+	_ = srv.Shutdown(ctxSh)
+	log.Println("bye")
+	fmt.Print("") // no-op
 }
