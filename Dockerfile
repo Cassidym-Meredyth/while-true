@@ -1,0 +1,21 @@
+# syntax=docker/dockerfile:1
+
+FROM golang:1.25-alpine AS build 
+RUN apk add --no-cache git
+WORKDIR /src/backend
+
+COPY backend/go.mod backend/go.sum ./
+RUN go mod download
+
+COPY backend/ ./
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
+    go build -ldflags="-s -w" -o /bin/icj ./cmd/api
+
+FROM alpine:3.20
+RUN adduser -D -g '' app && apk add --no-cache ca-certificates curl
+USER app
+WORKDIR /home/app
+COPY --from=build /bin/icj /usr/local/bin/icj
+EXPOSE 8081
+ENV GIN_MODE=release
+ENTRYPOINT ["/usr/local/bin/icj"]

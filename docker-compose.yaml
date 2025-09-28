@@ -1,0 +1,97 @@
+version: "3.9"
+
+name: while_true-stack
+
+x-health: &default-health
+  test: ["CMD-SHELL", "curl -fsS http://localhost:8080/health || exit 1"]
+  interval: 10s
+  timeout: 3s
+  retries: 15
+  start_period: 15s
+
+networks:
+  icj-net:
+    driver: bridge
+
+volumes:
+  pgdata:
+  keycloak_data:
+
+services:
+  postgres:
+    image: postgis/postgis:16-3.4
+    container_name: icj-DB
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      # для init-скриптов
+      MIGRATOR_USER: ${MIGRATOR_USER}
+      MIGRATOR_PASSWORD: ${MIGRATOR_PASSWORD}
+      APP_USER: ${APP_USER}
+      APP_USER_PASSWORD: ${APP_USER_PASSWORD}
+    ports:
+      - "5432:5432"
+    networks: [icj-net]
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./database/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+  
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.3.5
+    container_name: icj-keycloak
+    environment:
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
+    command: >
+      start-dev --import-realm --hostname-strict=false
+    ports:
+      - "8080:8080"
+    networks: [icj-net]
+    volumes:
+      - keycloak_data:/opt/keytcloak/data
+      - ./backend/KeyCloak/icj.json:/opt/keycloak/data/import/icj.json:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: icj-backend
+    env_file: .env
+    ports:
+      - "8081:8081"
+    networks: [icj-net]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      keycloak:
+        condition: service_started
+    healthcheck:
+      # в финальном образе мы поставили curl, значит этот healthcheck сработает
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8081/healthz || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: icj-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@example.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+    ports:
+      - "8082:80"
+    networks: [icj-net]
+    depends_on:
+      postgres:
+        condition: service_healthy
