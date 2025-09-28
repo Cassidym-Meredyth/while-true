@@ -21,6 +21,12 @@
 
     KEYCLOAK_ISSUER=http://keycloak:8080/realms/icj
     KEYCLOAK_AUDIENCE=icj
+    
+    MONGO_ROOT_USER=root
+    MONGO_ROOT_PASS=strong_root_pass
+    MONGO_APP_DB=icj
+    MONGO_APP_USER=icj_app
+    MONGO_APP_PASS=icj_app_pass
     ```
 
     - .dockerignore:
@@ -39,5 +45,6 @@
 2. Servers => Register => Server:
     - General => Name - icj-DB
     - Conneciton => Host name/address - icj-DB; Port - 5432; Username - app_user; Password - password; Save
+
 
 
