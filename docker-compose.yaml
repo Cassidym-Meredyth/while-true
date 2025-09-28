@@ -16,6 +16,7 @@ networks:
 volumes:
   pgdata:
   keycloak_data:
+  mongo_data:
 
 services:
   postgres:
@@ -95,3 +96,42 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+
+
+
+  mongo:
+    image: mongo:7
+    container_name: icj-mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER:-root}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASS:-strong_root_pass}
+      MONGO_INITDB_DATABASE: admin
+      TZ: Europe/Moscow
+    ports:
+      - "27017:27017"     # если нужен доступ с хоста (DBeaver/Compass). Иначе убери.
+    volumes:
+      - mongo_data:/data/db
+      - ./initdb:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "mongosh", "-u", "${MONGO_ROOT_USER:-root}", "-p", "${MONGO_ROOT_PASS:-strong_root_pass}", "--authenticationDatabase", "admin", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  mongo-express:
+    image: mongo-express:1
+    container_name: icj-mongo-express
+    restart: unless-stopped
+    depends_on:
+      mongo:
+        condition: service_healthy
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGODB_ENABLE_ADMIN: "true"
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_ROOT_USER:-root}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_ROOT_PASS:-strong_root_pass}
+      ME_CONFIG_BASICAUTH_USERNAME: ${ME_USER:-admin}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${ME_PASS:-admin}
+    ports:
+      - "8083:8081"
