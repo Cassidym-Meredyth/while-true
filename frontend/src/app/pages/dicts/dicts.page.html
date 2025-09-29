@@ -1,0 +1,50 @@
+<!-- Заголовок страницы -->
+<h2 style="margin: 12px 0 16px 0">Справочники</h2>
+
+<div class="toolbar card">
+  <button class="btn primary">Создать справочник</button>
+  <div class="spacer"></div>
+  <label class="search input" aria-label="Поиск">
+    <span class="search__icon" aria-hidden="true">🔍</span>
+    <input
+      class="search__field"
+      type="text"
+      placeholder="Поиск"
+      (input)="q = ($any($event.target)).value"
+    />
+  </label>
+</div>
+
+<!-- Виды работ -->
+<section class="card dict-block">
+  <div class="dict-head">
+    <h1>Виды работ</h1>
+    <button class="btn ghost" (click)="addWork()">Добавить</button>
+  </div>
+
+  <table class="dict-table">
+    <tbody>
+      <tr *ngFor="let w of filteredWorks(); trackBy: trackById">
+        <td class="title">{{ w.title }}</td>
+        <td class="desc">{{ w.desc }}</td>
+        <td class="actions">
+          <button class="btn ghost">Изменить</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pager">1–4 из 4</div>
+</section>
+
+<!-- Типы замечаний -->
+<section class="card dict-block">
+  <div class="dict-head">
+    <h1>Типы замечаний</h1>
+    <button class="btn ghost" (click)="addRemarkType()">Добавить</button>
+  </div>
+
+  <div class="chips">
+    <span class="badge" *ngFor="let r of remark">{{ r }}</span>
+  </div>
+</section>

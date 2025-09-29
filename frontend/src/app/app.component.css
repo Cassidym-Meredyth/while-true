@@ -1,0 +1,522 @@
+:root {
+  --border: #e7ecf5;
+  --text: #0b1426;
+  --bg: #f6f9fd;
+  --white: #fff;
+  --primary: #2f6bff;
+  --ok: #16a34a;
+  --danger: #ef4444;
+  --radius: 12px;
+  --topbar-h: 72px;
+  --sidebar-w: 220px;
+  --gap: 24px;
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font: 14px/1.4 Inter, system-ui, Arial;
+  color: var(--text);
+  background: var(--bg);
+}
+
+/* шапка */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  height: var(--topbar-h);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 var(--gap);
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.topbar .spacer {
+  flex: 1;
+}
+.window-dots {
+  display: flex;
+  gap: 8px;
+}
+.window-dots span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #eaeef7;
+  border: 1px solid var(--border);
+}
+
+/* Две колонки на flex */
+#layout {
+  display: flex;
+  gap: var(--gap);
+  padding: calc(var(--topbar-h) + var(--gap)) var(--gap) var(--gap);
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+
+/* Левый aside */
+#nav {
+  width: var(--sidebar-w);
+  flex: 0 0 var(--sidebar-w);
+  align-self: flex-start;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: sticky;
+  top: calc(var(--topbar-h) + var(--gap));
+  max-height: calc(100vh - var(--topbar-h) - var(--gap) * 2);
+  overflow: auto;
+}
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.menu a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #1f2a3d;
+  background: #fafcff;
+  border: 1px solid var(--border);
+}
+.menu a.active {
+  background: #eef4ff;
+  border-color: #cfe0ff;
+}
+.menu .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #c5cbd7;
+}
+.menu a.active .dot {
+  background: #2f6bff;
+}
+
+.bottom {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.sticker {
+  height: 120px;
+  border-radius: 12px;
+  border: 1px dashed var(--border);
+  background: #f8fbff center/contain no-repeat;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 0;
+  background: var(--primary);
+  color: #fff;
+  cursor: pointer;
+}
+.btn.ghost {
+  background: #fff;
+  color: #263143;
+  border: 1px solid var(--border);
+}
+.exit {
+  width: 100%;
+}
+
+/* Правая колонка */
+#main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Базовые атомы на всякий */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.input {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font: inherit;
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: 1px solid #dfe6fb;
+  background: #eef2ff;
+  color: #3b4896;
+}
+.badge.green {
+  background: #eaf9ee;
+  border-color: #c7f3d4;
+  color: #0d6d31;
+}
+.badge.yellow {
+  background: #fff7db;
+  border-color: #ffe6a1;
+  color: #7b5400;
+}
+.badge.red {
+  background: #ffe9e9;
+  border-color: #ffd1d1;
+  color: #a32020;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --topbar-h: 64px;
+    --sidebar-w: 100%;
+  }
+  #layout {
+    flex-direction: column;
+  }
+  #nav {
+    position: static;
+    width: 100%;
+    max-height: none;
+  }
+}
+
+/* растягиваем левую колонку на всю высоту окна */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - var(--topbar-h) - var(--gap) * 2);
+}
+
+/* всё, что над «Выход» – вверх, а сам блок – вниз */
+.sidebar .admin-sticker {
+  margin-top: auto; /* прижмёт к низу */
+  padding-top: 12px; /* и сделает «дышло» между меню и «Выход» */
+}
+
+/* ======= ЛЕЙАУТ ======= */
+
+.shell {
+  display: grid;
+  grid-template-columns: 260px 1fr; /* ширина aside + контент */
+  gap: var(--gap); /* расстояние между колонками */
+  padding: calc(var(--topbar-h) + var(--gap)) var(--gap) var(--gap);
+  min-height: calc(100vh - var(--topbar-h));
+  box-sizing: border-box;
+}
+
+.sidebar {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  /* ключ — фиксировать под шапкой и задать высоту окна */
+  position: sticky;
+  top: calc(var(--topbar-h) + var(--gap));
+  height: calc(100dvh - var(--topbar-h) - var(--gap) * 2);
+  overflow: auto;
+  align-self: start;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.menu a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: #1f2a3d;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  background: #fafcff;
+}
+.menu a.active {
+  background: #eef4ff;
+  border-color: #cfe0ff;
+}
+
+/* метки в меню: круг у "Пользователи" и квадрат у "Справочники" */
+.mark {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  background: #c5cbd7;
+}
+.dot {
+  border-radius: 50%;
+}
+.square {
+  border-radius: 3px;
+}
+.menu a.active .mark {
+  background: var(--primary);
+}
+
+.admin-sticker {
+  margin-top: auto; /* картинка+кнопка уйдут вниз aside */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.admin-sticker .img {
+  height: 120px;
+  border-radius: 12px;
+  border: 1px dashed var(--border);
+  /* ВАЖНО: ведущий слэш — путь от корня приложения */
+  /*background: #f8fbff url('/src/assets/admin.png') center/contain no-repeat;*/
+}
+.exit {
+  margin-top: auto;
+} /* "Выход" прижат вниз */
+
+/* ======= ОБЩИЕ КНОПКИ ======= */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+}
+.btn.ghost {
+  background: #fff;
+  color: #263143;
+  border: 1px solid var(--border);
+}
+.btn.primary {
+  background: var(--primary);
+  color: #fff;
+} /* синяя кнопка */
+
+/* ======= TOOLBAR И ПОИСК ======= */
+
+.toolbar.card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--white);
+  border: 1px solid var(--border);
+}
+.spacer {
+  flex: 1;
+}
+
+/* общий компонент поиска (и для users, и для dicts) */
+.search {
+  position: relative;
+  display: block;
+  width: 520px;
+  max-width: 100%;
+}
+.search__field {
+  width: 100%;
+  height: 40px;
+  font: inherit;
+  outline: none;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  padding: 0 12px 0 36px; /* место под иконку */
+}
+.search__icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  opacity: 0.6;
+  line-height: 1;
+  font-size: 14px;
+}
+/* если .input задаёт рамки — уберём */
+.search.input {
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
+/* ======= ЛЕЙАУТ ======= */
+
+.shell {
+  display: grid;
+  grid-template-columns: 260px 1fr; /* ширина aside + контент */
+  gap: var(--gap); /* расстояние между колонками */
+  padding: calc(var(--topbar-h) + var(--gap)) var(--gap) var(--gap);
+  min-height: calc(100vh - var(--topbar-h));
+  box-sizing: border-box;
+}
+
+.sidebar {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  /* ключ — фиксировать под шапкой и задать высоту окна */
+  position: sticky;
+  top: calc(var(--topbar-h) + var(--gap));
+  height: calc(100dvh - var(--topbar-h) - var(--gap) * 2);
+  overflow: auto;
+  align-self: start;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.menu a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: #1f2a3d;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  background: #fafcff;
+}
+.menu a.active {
+  background: #eef4ff;
+  border-color: #cfe0ff;
+}
+
+/* метки в меню: круг у "Пользователи" и квадрат у "Справочники" */
+.mark {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  background: #c5cbd7;
+}
+.dot {
+  border-radius: 50%;
+}
+.square {
+  border-radius: 3px;
+}
+.menu a.active .mark {
+  background: var(--primary);
+}
+
+.admin-sticker {
+  margin-top: auto; /* картинка+кнопка уйдут вниз aside */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.admin-sticker .img {
+  height: 120px;
+  border-radius: 12px;
+  border: 1px dashed var(--border);
+  background: #f8fbff url('/src/assets/admin.png') center/contain no-repeat;
+}
+.exit {
+  margin-top: auto;
+} /* "Выход" прижат вниз */
+
+/* ======= ОБЩИЕ КНОПКИ ======= */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+}
+.btn.ghost {
+  background: #fff;
+  color: #263143;
+  border: 1px solid var(--border);
+}
+.btn.primary {
+  background: var(--primary);
+  color: #fff;
+} /* синяя кнопка */
+
+/* ======= TOOLBAR И ПОИСК ======= */
+
+.toolbar.card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--white);
+  border: 1px solid var(--border);
+}
+.spacer {
+  flex: 1;
+}
+
+/* общий компонент поиска (и для users, и для dicts) */
+.search {
+  position: relative;
+  display: block;
+  width: 520px;
+  max-width: 100%;
+}
+.search__field {
+  width: 100%;
+  height: 40px;
+  font: inherit;
+  outline: none;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  padding: 0 12px 0 36px; /* место под иконку */
+}
+.search__icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  opacity: 0.6;
+  line-height: 1;
+  font-size: 14px;
+}
+/* если .input задаёт рамки — уберём */
+.search.input {
+  background: transparent;
+  border: 0;
+  padding: 0;
+}

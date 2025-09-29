@@ -1,0 +1,54 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  margin-bottom: 16px;
+}
+.toolbar .spacer {
+  flex: 1;
+}
+
+.dict-block {
+  padding: 0;
+  overflow: hidden;
+}
+.dict-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px 8px;
+  border-bottom: 1px solid var(--border);
+  border-top-left-radius: var(--radius);
+  border-top-right-radius: var(--radius);
+}
+.dict-head h1 {
+  margin: 0;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.dict-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.dict-table td {
+  padding: 18px;
+  border-bottom: 1px solid #f2f4fa;
+  vertical-align: top;
+}
+.dict-table td.title {
+  width: 32%;
+  font-size: 18px;
+}
+.dict-table td.desc {
+  color: #3e546e;
+}
+.dict-table td.actions {
+  width: 1%;
+  white-space: nowrap;
+}
+.pager {
+  padding: 12px 18px;
+  color: #9aa4b2;
+}

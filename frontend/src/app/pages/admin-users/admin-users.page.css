@@ -1,0 +1,242 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  margin-bottom: 16px;
+}
+.toolbar .spacer {
+  flex: 1;
+}
+
+.u-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+.u-grid.with-panel {
+  grid-template-columns: 1fr 380px; /* когда панель открыта — 2 колонки */
+}
+
+.table-wrap {
+  overflow: hidden;
+  padding: 0;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.table thead th {
+  text-align: left;
+  font-weight: 600;
+  padding: 14px 18px;
+  background: #f6f9fd;
+  border-bottom: 1px solid var(--border);
+}
+.table tbody td {
+  padding: 14px 18px;
+  border-bottom: 1px solid #f2f4fa;
+}
+.pager {
+  padding: 12px 18px;
+  color: #9aa4b2;
+}
+
+.panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+}
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+.icon-btn {
+  width: 28px;
+  height: 28px;
+  line-height: 26px;
+  text-align: center;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #fff;
+  cursor: pointer;
+  font-size: 18px;
+}
+.radio {
+  display: flex;
+  gap: 16px;
+  color: #3e546e;
+}
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+/* столбец "Последний вход" — к правому краю, лёгкая подстройка */
+.table th:nth-child(5),
+.table td:nth-child(5) {
+  text-align: left;
+}
+
+/* чипы ролей */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: 1px solid #dfe6fb;
+  background: #eef2ff;
+  color: #3b4896;
+}
+
+/* раскраска по ролям */
+.chip.admin {
+  background: #e9efff;
+  border-color: #cfe0ff;
+  color: #2f56d6;
+}
+.chip.inspector {
+  background: #eef2ff;
+  border-color: #dfe6fb;
+  color: #3b4896;
+}
+.chip.foreman {
+  background: #fff7db;
+  border-color: #ffe6a1;
+  color: #7b5400;
+}
+.chip.customer {
+  background: #eaf9ee;
+  border-color: #c7f3d4;
+  color: #0d6d31;
+}
+
+/* бейджи статуса */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: 1px solid #dfe6fb;
+  background: #eef2ff;
+  color: #3b4896;
+}
+.badge.green {
+  background: #eaf9ee;
+  border-color: #c7f3d4;
+  color: #0d6d31;
+}
+.badge.red {
+  background: #ffe9e9;
+  border-color: #ffd1d1;
+  color: #a32020;
+}
+
+/* сетка таблица + панель */
+.users-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+.users-grid.with-panel {
+  grid-template-columns: 1fr 380px; /* ширина правой панели */
+}
+
+/* правая панель */
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: sticky;
+  top: calc(var(--topbar-h) + var(--gap));
+  height: calc(100dvh - var(--topbar-h) - var(--gap) * 2);
+  overflow: auto;
+}
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.icon-btn {
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #fff;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* уже были: донастроим столбец "Последний вход" */
+.table th:nth-child(5),
+.table td:nth-child(5) {
+  text-align: left;
+  padding-right: 16px;
+  transform: translateX(-4px);
+}
+
+/* чипы ролей и бейджи статусов — как раньше */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: 1px solid #dfe6fb;
+  background: #eef2ff;
+  color: #3b4896;
+}
+.chip.admin {
+  background: #e9efff;
+  border-color: #cfe0ff;
+  color: #2f56d6;
+}
+.chip.inspector {
+  background: #eef2ff;
+  border-color: #dfe6fb;
+  color: #3b4896;
+}
+.chip.foreman {
+  background: #fff7db;
+  border-color: #ffe6a1;
+  color: #7b5400;
+}
+.chip.customer {
+  background: #eaf9ee;
+  border-color: #c7f3d4;
+  color: #0d6d31;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: 1px solid #dfe6fb;
+  background: #eef2ff;
+  color: #3b4896;
+}
+.badge.green {
+  background: #eaf9ee;
+  border-color: #c7f3d4;
+  color: #0d6d31;
+}
+.badge.red {
+  background: #ffe9e9;
+  border-color: #ffd1d1;
+  color: #a32020;
+}
