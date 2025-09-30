@@ -8,7 +8,7 @@ RUN npm ci
 COPY . .
 
 # Сборка Angular
-RUN npm run build --
+RUN npm run build
 
 # === Runtime (nginx) ===
 FROM nginx:1.27-alpine AS runner
@@ -25,4 +25,5 @@ COPY --from=builder /app/dist/*/browser /usr/share/nginx/html
 RUN apk add --no-cache curl
 HEALTHCHECK --interval=10s --timeout=3s --retries=15 \
   CMD curl -fsS http://localhost/health || exit 1
+
 
