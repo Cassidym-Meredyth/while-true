@@ -520,3 +520,25 @@ body {
   border: 0;
   padding: 0;
 }
+
+.primary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 10px;
+  border: 1px solid #2f6bff;
+  background: #2f6bff;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(47, 107, 255, 0.25);
+}
+.primary-btn:hover {
+  filter: brightness(0.98);
+}
+.primary-btn:active {
+  transform: translateY(1px);
+}

@@ -1,50 +1,58 @@
-<!-- Заголовок страницы -->
-<h2 style="margin: 12px 0 16px 0">Справочники</h2>
+<section class="page page-dicts">
+  <!-- такой же тулбар, как у пользователей -->
+  <div class="toolbar three-cols">
+    <h1>Справочники</h1>
 
-<div class="toolbar card">
-  <button class="btn primary">Создать справочник</button>
-  <div class="spacer"></div>
-  <label class="search input" aria-label="Поиск">
-    <span class="search__icon" aria-hidden="true">🔍</span>
-    <input
-      class="search__field"
-      type="text"
-      placeholder="Поиск"
-      (input)="q = ($any($event.target)).value"
-    />
-  </label>
-</div>
+    <button class="btn primary">Создать справочник</button>
 
-<!-- Виды работ -->
-<section class="card dict-block">
-  <div class="dict-head">
-    <h1>Виды работ</h1>
-    <button class="btn ghost" (click)="addWork()">Добавить</button>
+    <label class="search">
+      <span class="icon">🔎</span>
+      <input type="text" placeholder="Поиск" />
+    </label>
   </div>
 
-  <table class="dict-table">
-    <tbody>
-      <tr *ngFor="let w of filteredWorks(); trackBy: trackById">
-        <td class="title">{{ w.title }}</td>
-        <td class="desc">{{ w.desc }}</td>
-        <td class="actions">
-          <button class="btn ghost">Изменить</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <!-- Блок «Виды работ» -->
+  <div class="dict-card">
+    <div class="dict-card__header">
+      <h2>Виды работ</h2>
+      <button class="btn primary">Добавить</button>
+    </div>
 
-  <div class="pager">1–4 из 4</div>
-</section>
+    <ul class="dict-list">
+      <li class="row">
+        <span class="title">Закладка фундамента</span>
+        <span class="note">Очень важное красим красками и лакируем лаками</span>
+        <button class="btn ghost">Изменить</button>
+      </li>
+      <li class="row">
+        <span class="title">Покраска</span>
+        <span class="note">Заложение фундамента на объекте</span>
+        <button class="btn ghost">Изменить</button>
+      </li>
+      <li class="row">
+        <span class="title">Укладка плитки</span>
+        <span class="note">Заложение фундамента на объекте</span>
+        <button class="btn ghost">Изменить</button>
+      </li>
+      <li class="row">
+        <span class="title">Установка вентиляции</span>
+        <span class="note">Заложение фундамента на объекте</span>
+        <button class="btn ghost">Изменить</button>
+      </li>
+    </ul>
 
-<!-- Типы замечаний -->
-<section class="card dict-block">
-  <div class="dict-head">
-    <h1>Типы замечаний</h1>
-    <button class="btn ghost" (click)="addRemarkType()">Добавить</button>
+    <div class="pager">
+      <span>1–4 из 4</span>
+      <span>1–4 из 4</span>
+    </div>
   </div>
 
-  <div class="chips">
-    <span class="badge" *ngFor="let r of remark">{{ r }}</span>
+  <!-- Блок «Типы замечаний» -->
+  <div class="dict-card">
+    <div class="dict-card__header">
+      <h2>Типы замечаний</h2>
+      <button class="btn primary">Добавить</button>
+    </div>
+    <!-- наполнение позже -->
   </div>
 </section>

@@ -10,7 +10,7 @@ type Work = { id: number; title: string; desc: string };
   templateUrl: './dicts.page.html',
   styleUrls: ['./dicts.page.css'],
 })
-export class DictsPageComponent {
+export class DictsPage {
   q = '';
   works: Work[] = [
     {

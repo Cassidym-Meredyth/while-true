@@ -1,54 +1,113 @@
-.toolbar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px;
-  margin-bottom: 16px;
-}
-.toolbar .spacer {
-  flex: 1;
+/* тот же набор стилей, что и на странице пользователей */
+.page {
+  display: grid;
+  gap: 16px;
 }
 
-.dict-block {
-  padding: 0;
+/* toolbar в три колонки: заголовок | кнопка | поиск справа */
+.toolbar.three-cols {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  gap: 12px;
+}
+.toolbar h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+.search {
+  justify-self: end;
+}
+
+.btn {
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid #e7ebf3;
+  background: #fff;
+  cursor: pointer;
+  font-weight: 600;
+}
+.btn.primary {
+  background: #3b82f6;
+  color: #fff;
+  border-color: #3b82f6;
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.25);
+}
+.btn.ghost {
+  background: #fff;
+}
+
+.search {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 12px;
+  border: 1px solid #e7ebf3;
+  background: #fff;
+  min-width: 280px;
+}
+.search input {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+}
+
+/* карточки справочников */
+.dict-card {
+  background: #fff;
+  border: 1px solid #e7ebf3;
+  border-radius: 18px;
+  box-shadow: 0 12px 36px rgba(16, 24, 40, 0.06);
   overflow: hidden;
 }
-.dict-head {
+.dict-card + .dict-card {
+  margin-top: 14px;
+}
+
+.dict-card__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 18px 8px;
-  border-bottom: 1px solid var(--border);
-  border-top-left-radius: var(--radius);
-  border-top-right-radius: var(--radius);
+  padding: 18px 18px 8px;
+  border-bottom: 1px solid #eef2f8;
 }
-.dict-head h1 {
+.dict-card__header h2 {
   margin: 0;
-  font-size: 25px;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: 800;
 }
 
-.dict-table {
-  width: 100%;
-  border-collapse: collapse;
+.dict-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
-.dict-table td {
-  padding: 18px;
-  border-bottom: 1px solid #f2f4fa;
-  vertical-align: top;
+.row {
+  display: grid;
+  grid-template-columns: 1.2fr 1.8fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid #f2f4f8;
 }
-.dict-table td.title {
-  width: 32%;
-  font-size: 18px;
+.row:last-child {
+  border-bottom: none;
 }
-.dict-table td.desc {
-  color: #3e546e;
+.row .title {
+  font-weight: 600;
 }
-.dict-table td.actions {
-  width: 1%;
-  white-space: nowrap;
+.row .note {
+  color: #6b7385;
 }
+
 .pager {
-  padding: 12px 18px;
-  color: #9aa4b2;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 16px;
+  color: #8a93a6;
 }

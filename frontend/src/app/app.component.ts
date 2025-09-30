@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NgIf, AsyncPipe } from '@angular/common';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { OfflineBannerComponent } from './shared/offline-banner.component';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +11,7 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
   imports: [
     // чтобы работали <router-outlet>, routerLink, routerLinkActive и *ngIf
     RouterOutlet,
+    OfflineBannerComponent,
     RouterLink,
     RouterLinkActive,
     NgIf,

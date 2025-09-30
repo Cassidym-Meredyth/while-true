@@ -1,28 +1,33 @@
-// Блок "Нет соединения" — как на карточке справа в твоем первом экране.
 import { Component, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'app-offline-banner',
+  imports: [CommonModule],
   template: `
-    <!-- имитируем оффлайн: поменяй значение на true/false по надобности -->
-    <div *ngIf="!online()" class="offline">Нет соединения. Действия поставлены в очередь.</div>
+    <div *ngIf="!online()" class="offline-banner">
+      Вы офлайн. Некоторые функции недоступны.
+    </div>
   `,
   styles: [
     `
-    .offline{
-      margin: 12px 0;
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid #ffe1a7;
-      background: #fff7e0;
-      color: #7a5200;
-      font-size: 14px;
+    .offline-banner {
+      position: sticky; top: 0; z-index: 1000;
+      padding: 8px 12px; background: #ffb703; color: #111;
+      font-size: 14px; text-align: center;
     }
   `,
   ],
 })
 export class OfflineBannerComponent {
-  // сигнал просто для демонстрации. Дальше можно связать с navigator.onLine
-  online = signal(true);
+  online = signal<boolean>(
+    typeof navigator !== 'undefined' ? navigator.onLine : true
+  );
+  constructor() {
+    if (typeof window !== 'undefined') {
+      window.addEventListener('online', () => this.online.set(true));
+      window.addEventListener('offline', () => this.online.set(false));
+    }
+  }
 }
