@@ -1,0 +1,81 @@
+<section class="auth-shell">
+  <div class="auth-card">
+    <h1 class="auth-title">ЛОГОТИП</h1>
+
+    <form class="auth-form" (submit)="$event.preventDefault()">
+      <label class="af-field">
+        <span class="af-label">Почта</span>
+        <input
+          class="af-input"
+          type="email"
+          name="email"
+          [(ngModel)]="email"
+          (focus)="emailError = null"
+          (blur)="email ? null : triggerEmailError()"
+          autocomplete="email"
+        />
+        <small class="af-error" *ngIf="emailError">{{ emailError }}</small>
+      </label>
+
+      <label class="af-field">
+        <span class="af-label">Номер телефона</span>
+        <input
+          class="af-input"
+          name="phone"
+          [(ngModel)]="phone"
+          (focus)="phoneError = null"
+          (blur)="phone ? null : triggerPhoneError()"
+          inputmode="tel"
+          placeholder="+7 999 999 99 99"
+        />
+        <small class="af-error" *ngIf="phoneError">{{ phoneError }}</small>
+      </label>
+
+      <label class="af-field">
+        <span class="af-label">Логин</span>
+        <input
+          class="af-input"
+          name="username"
+          [(ngModel)]="username"
+          (focus)="usernameError = null"
+          (blur)="username ? null : triggerLoginError()"
+          autocomplete="username"
+        />
+        <small class="af-error" *ngIf="usernameError"
+          >{{ usernameError }}</small
+        >
+      </label>
+
+      <label class="af-field">
+        <span class="af-label">Пароль</span>
+        <input
+          class="af-input"
+          type="password"
+          name="password"
+          [(ngModel)]="password"
+          autocomplete="new-password"
+        />
+      </label>
+
+      <label class="af-field">
+        <span class="af-label">Повторите пароль</span>
+        <input
+          class="af-input"
+          type="password"
+          name="confirm"
+          [(ngModel)]="confirm"
+          autocomplete="new-password"
+        />
+      </label>
+
+      <div class="af-actions">
+        <label class="remember">
+          <input type="checkbox" [(ngModel)]="remember" name="remember_reg" />
+          <span>Запомнить меня</span>
+        </label>
+
+        <a class="link" [routerLink]="['/auth/login']">Авторизоваться</a>
+      </div>
+    </form>
+  </div>
+</section>

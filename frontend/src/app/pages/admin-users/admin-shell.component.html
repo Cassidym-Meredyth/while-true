@@ -1,0 +1,41 @@
+<section class="admin-root light">
+  <header class="admin-header">
+    <div class="header-left"></div>
+    <div class="header-right">
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </header>
+
+  <div class="admin-body">
+    <aside class="admin-sidebar">
+      <nav class="side-nav">
+        <button
+          class="nav"
+          [class.active]="section() === 'users'"
+          (click)="go('users')"
+        >
+          <span class="bullet"></span> Пользователи
+        </button>
+        <button
+          class="nav"
+          [class.active]="section() === 'dicts'"
+          (click)="go('dicts')"
+        >
+          <span class="bullet"></span> Справочники
+        </button>
+      </nav>
+
+      <div class="admin-sticker">
+        <img src="/assets/admin.png" alt="Админ" />
+      </div>
+
+      <button class="logout" (click)="logout()">Выход</button>
+    </aside>
+
+    <main class="admin-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</section>

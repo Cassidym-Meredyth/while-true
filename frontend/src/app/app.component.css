@@ -147,7 +147,6 @@ body {
   min-width: 0;
 }
 
-/* Базовые атомы на всякий */
 .card {
   background: var(--white);
   border: 1px solid var(--border);
@@ -208,13 +207,13 @@ body {
   min-height: calc(100vh - var(--topbar-h) - var(--gap) * 2);
 }
 
-/* всё, что над «Выход» – вверх, а сам блок – вниз */
+/* все, что над «Выход» – вверх, а сам блок – вниз */
 .sidebar .admin-sticker {
   margin-top: auto; /* прижмёт к низу */
-  padding-top: 12px; /* и сделает «дышло» между меню и «Выход» */
+  padding-top: 12px; /* и сделает пространство между меню и «Выход» */
 }
 
-/* ======= ЛЕЙАУТ ======= */
+/* ======= layout ======= */
 
 .shell {
   display: grid;
@@ -290,8 +289,6 @@ body {
   height: 120px;
   border-radius: 12px;
   border: 1px dashed var(--border);
-  /* ВАЖНО: ведущий слэш — путь от корня приложения */
-  /*background: #f8fbff url('/src/assets/admin.png') center/contain no-repeat;*/
 }
 .exit {
   margin-top: auto;
@@ -361,14 +358,14 @@ body {
   line-height: 1;
   font-size: 14px;
 }
-/* если .input задаёт рамки — уберём */
+
 .search.input {
   background: transparent;
   border: 0;
   padding: 0;
 }
 
-/* ======= ЛЕЙАУТ ======= */
+/* ======= layout ======= */
 
 .shell {
   display: grid;
@@ -387,8 +384,6 @@ body {
   display: flex;
   flex-direction: column;
   gap: 8px;
-
-  /* ключ — фиксировать под шапкой и задать высоту окна */
   position: sticky;
   top: calc(var(--topbar-h) + var(--gap));
   height: calc(100dvh - var(--topbar-h) - var(--gap) * 2);
@@ -514,9 +509,31 @@ body {
   line-height: 1;
   font-size: 14px;
 }
-/* если .input задаёт рамки — уберём */
+
 .search.input {
   background: transparent;
   border: 0;
   padding: 0;
+}
+
+.primary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 10px;
+  border: 1px solid #2f6bff;
+  background: #2f6bff;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(47, 107, 255, 0.25);
+}
+.primary-btn:hover {
+  filter: brightness(0.98);
+}
+.primary-btn:active {
+  transform: translateY(1px);
 }

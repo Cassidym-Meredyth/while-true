@@ -1,242 +1,229 @@
-.toolbar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px;
-  margin-bottom: 16px;
-}
-.toolbar .spacer {
-  flex: 1;
-}
-
-.u-grid {
+.page {
   display: grid;
-  grid-template-columns: 1fr;
   gap: 16px;
 }
-.u-grid.with-panel {
-  grid-template-columns: 1fr 380px; /* когда панель открыта — 2 колонки */
-}
-
-.table-wrap {
-  overflow: hidden;
-  padding: 0;
-}
-.table {
-  width: 100%;
-  border-collapse: collapse;
-}
-.table thead th {
-  text-align: left;
-  font-weight: 600;
-  padding: 14px 18px;
-  background: #f6f9fd;
-  border-bottom: 1px solid var(--border);
-}
-.table tbody td {
-  padding: 14px 18px;
-  border-bottom: 1px solid #f2f4fa;
-}
-.pager {
-  padding: 12px 18px;
-  color: #9aa4b2;
-}
-
-.panel {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 16px;
-}
-.panel-header {
-  display: flex;
+.toolbar.three-cols {
+  display: grid;
+  grid-template-columns: auto auto 1fr; /* заголовок | кнопка | поиск справа */
+  gap: 12px;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 4px;
 }
-.icon-btn {
-  width: 28px;
-  height: 28px;
-  line-height: 26px;
-  text-align: center;
-  border-radius: 8px;
-  border: 1px solid var(--border);
+.toolbar h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+.search {
+  justify-self: end;
+}
+
+.btn {
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid #e7ebf3;
   background: #fff;
   cursor: pointer;
-  font-size: 18px;
-}
-.radio {
-  display: flex;
-  gap: 16px;
-  color: #3e546e;
-}
-label {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
   font-weight: 600;
-  font-size: 13px;
+}
+.btn.primary {
+  background: #3b82f6;
+  color: #fff;
+  border-color: #3b82f6;
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.25);
+}
+.btn.ghost {
+  background: #fff;
+}
+.btn.wide {
+  width: 100%;
 }
 
-/* столбец "Последний вход" — к правому краю, лёгкая подстройка */
-.table th:nth-child(5),
-.table td:nth-child(5) {
-  text-align: left;
-}
-
-/* чипы ролей */
-.chip {
+.search {
   display: inline-flex;
   align-items: center;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-  border: 1px solid #dfe6fb;
-  background: #eef2ff;
-  color: #3b4896;
+  gap: 8px;
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 12px;
+  border: 1px solid #e7ebf3;
+  background: #fff;
+  min-width: 280px;
+}
+.search input {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
 }
 
-/* раскраска по ролям */
-.chip.admin {
-  background: #e9efff;
-  border-color: #cfe0ff;
-  color: #2f56d6;
+/* ======= Table ======= */
+.card.table {
+  background: #fff;
+  border: 1px solid #e7ebf3;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 12px 36px rgba(16, 24, 40, 0.06);
 }
-.chip.inspector {
-  background: #eef2ff;
-  border-color: #dfe6fb;
-  color: #3b4896;
+.grid {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
 }
-.chip.foreman {
-  background: #fff7db;
-  border-color: #ffe6a1;
-  color: #7b5400;
+.grid thead th {
+  text-align: left;
+  font-weight: 600;
+  color: #6b7385;
+  padding: 14px 16px;
+  border-bottom: 1px solid #eef2f8;
+  background: #fafcff;
 }
-.chip.customer {
-  background: #eaf9ee;
-  border-color: #c7f3d4;
-  color: #0d6d31;
+.grid tbody td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #f2f4f8;
+}
+.grid tbody tr:hover {
+  background: #f9fbff;
+}
+.pager {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 16px;
+  color: #8a93a6;
 }
 
-/* бейджи статуса */
+/* Badges */
 .badge {
   display: inline-flex;
   align-items: center;
   padding: 4px 10px;
   border-radius: 999px;
+  font-weight: 600;
   font-size: 12px;
-  border: 1px solid #dfe6fb;
-  background: #eef2ff;
-  color: #3b4896;
 }
-.badge.green {
-  background: #eaf9ee;
-  border-color: #c7f3d4;
-  color: #0d6d31;
+.role.customer {
+  color: #1b7f3f;
+  background: #e8f7ed;
 }
-.badge.red {
-  background: #ffe9e9;
-  border-color: #ffd1d1;
-  color: #a32020;
+.role.foreman {
+  color: #8a6a00;
+  background: #fff4cc;
+}
+.role.inspector {
+  color: #3e5db3;
+  background: #e8efff;
+}
+.role.admin {
+  color: #3b3b3b;
+  background: #eeeeee;
+}
+.status.ok {
+  color: #0ea564;
+}
+.status.err {
+  color: #ef4444;
 }
 
-/* сетка таблица + панель */
-.users-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
-}
-.users-grid.with-panel {
-  grid-template-columns: 1fr 380px; /* ширина правой панели */
-}
-
-/* правая панель */
+/* ======= Right side panel (drawer) ======= */
 .panel {
-  display: flex;
-  flex-direction: column;
+  position: fixed;
+  right: 18px;
+  top: 74px; /* под шапкой админки */
+  width: 360px;
+  max-width: calc(100vw - 36px);
+  height: calc(100dvh - 92px);
+  background: #fff;
+  border: 1px solid #e7ebf3;
+  border-radius: 14px;
+  box-shadow: 0 24px 64px rgba(16, 24, 40, 0.16);
+  padding: 16px;
+  display: grid;
   gap: 12px;
-  position: sticky;
-  top: calc(var(--topbar-h) + var(--gap));
-  height: calc(100dvh - var(--topbar-h) - var(--gap) * 2);
-  overflow: auto;
+  align-content: start;
+  z-index: 30;
 }
 .panel-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 4px;
+}
+.panel-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
 }
 .icon-btn {
   width: 32px;
   height: 32px;
-  line-height: 32px;
-  text-align: center;
-  border-radius: 8px;
-  border: 1px solid var(--border);
+  border-radius: 10px;
+  border: 1px solid #e7ebf3;
   background: #fff;
   cursor: pointer;
   font-size: 18px;
+  line-height: 30px;
+  text-align: center;
 }
 
-/* уже были: донастроим столбец "Последний вход" */
-.table th:nth-child(5),
-.table td:nth-child(5) {
-  text-align: left;
-  padding-right: 16px;
-  transform: translateX(-4px);
+/* Inputs */
+.field {
+  display: grid;
+  gap: 6px;
+}
+.label {
+  font-weight: 600;
+  color: #6b7385;
+}
+.input,
+.field select {
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 10px;
+  border: 1px solid #e7ebf3;
+  background: #fff;
+  outline: none;
 }
 
-/* чипы ролей и бейджи статусов — как раньше */
-.chip {
-  display: inline-flex;
+/* Radios — синий кружок на выбранном */
+.radios {
+  display: flex;
   align-items: center;
-  padding: 4px 10px;
+  gap: 16px;
+}
+.radio-chip {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  padding: 6px 10px;
   border-radius: 999px;
-  font-size: 12px;
-  border: 1px solid #dfe6fb;
-  background: #eef2ff;
-  color: #3b4896;
+  border: 1px solid #e7ebf3;
+  background: #fff;
+  cursor: pointer;
+  user-select: none;
 }
-.chip.admin {
-  background: #e9efff;
-  border-color: #cfe0ff;
-  color: #2f56d6;
-}
-.chip.inspector {
-  background: #eef2ff;
-  border-color: #dfe6fb;
-  color: #3b4896;
-}
-.chip.foreman {
-  background: #fff7db;
-  border-color: #ffe6a1;
-  color: #7b5400;
-}
-.chip.customer {
-  background: #eaf9ee;
-  border-color: #c7f3d4;
-  color: #0d6d31;
+.radio-chip input[type='radio'] {
+  width: 14px;
+  height: 14px;
+  accent-color: #3b82f6; /* синий кружок */
 }
 
-.badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-  border: 1px solid #dfe6fb;
-  background: #eef2ff;
-  color: #3b4896;
+/* Select arrow */
+.field.select select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, #9aa5b4 50%),
+    linear-gradient(135deg, #9aa5b4 50%, transparent 50%);
+  background-position: calc(100% - 16px) 14px, calc(100% - 10px) 14px;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
 }
-.badge.green {
-  background: #eaf9ee;
-  border-color: #c7f3d4;
-  color: #0d6d31;
-}
-.badge.red {
-  background: #ffe9e9;
-  border-color: #ffd1d1;
-  color: #a32020;
+
+/* Small screens: панель на всю ширину снизу */
+@media (max-width: 860px) {
+  .panel {
+    right: 12px;
+    left: 12px;
+    width: auto;
+    height: auto;
+    bottom: 12px;
+    top: auto;
+  }
 }

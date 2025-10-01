@@ -1,93 +1,74 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-type UserRow = {
-  id: number;
-  fio: string;
-  role: 'Админ' | 'Инспектор' | 'Прораб' | 'Заказчик';
-  phone: string;
-  status: 'Активен' | 'Заблокирован';
-  last: string;
-};
+import { AdminApi, AdminUserRow } from '../../core/admin.api';
 
 @Component({
-  selector: 'app-admin-users-page',
   standalone: true,
+  selector: 'app-admin-users-page',
   imports: [CommonModule],
   templateUrl: './admin-users.page.html',
   styleUrls: ['./admin-users.page.css'],
 })
-export class AdminUsersPageComponent {
-  // состояние правой панели
+export class AdminUsersPage implements OnInit {
   panelOpen = false;
+  contact: 'phone' | 'email' = 'phone';
 
-  // данные таблицы (пример)
-  rows: UserRow[] = [
-    {
-      id: 1,
-      fio: 'Фамилия И.О.',
-      role: 'Заказчик',
-      phone: '449-110-13',
-      status: 'Активен',
-      last: '17 мая',
-    },
-    {
-      id: 2,
-      fio: 'Фамилия И.О.',
-      role: 'Прораб',
-      phone: '123-456-78',
-      status: 'Активен',
-      last: '25 августа',
-    },
-    {
-      id: 3,
-      fio: 'Фамилия И.О.',
-      role: 'Инспектор',
-      phone: '111-155-457',
-      status: 'Активен',
-      last: '1 декабря',
-    },
-    {
-      id: 4,
-      fio: 'Фамилия И.О.',
-      role: 'Админ',
-      phone: '993-123-12',
-      status: 'Заблокирован',
-      last: '23 января',
-    },
-  ];
+  // данные из бэка
+  rows: AdminUserRow[] = [];
+  loading = false;
+  loadError: string | null = null;
 
-  // кнопки панели
-  openPanel(): void {
+  constructor(private adminApi: AdminApi) {}
+
+  ngOnInit(): void {
+    this.refresh();
+  }
+
+  /** Подтянуть список пользователей с бэка */
+  refresh(): void {
+    this.loading = true;
+    this.loadError = null;
+
+    this.adminApi.listUsers().subscribe({
+      next: (data) => (this.rows = data || []),
+      error: (err) => {
+        console.error('listUsers error', err);
+        this.loadError = 'Не удалось загрузить пользователей';
+        this.rows = [];
+      },
+      complete: () => (this.loading = false),
+    });
+  }
+
+  openPanel() {
     this.panelOpen = true;
   }
-  closePanel(): void {
+  closePanel() {
     this.panelOpen = false;
   }
-
-  // CSS-класс «плашки» роли
-  roleClass(role: UserRow['role']): string {
-    switch (role) {
-      case 'Админ':
-        return 'chip chip--blue';
-      case 'Инспектор':
-        return 'chip chip--indigo';
-      case 'Прораб':
-        return 'chip chip--yellow';
-      case 'Заказчик':
-        return 'chip chip--green';
-      default:
-        return 'chip';
-    }
+  setContact(v: 'phone' | 'email') {
+    this.contact = v;
   }
 
-  // CSS-класс статуса
-  statusClass(status: UserRow['status']): string {
-    return status === 'Активен' ? 'badge green' : 'badge red';
+  /** Пример создания пользователя */
+  createUser(payload: Partial<AdminUserRow> & { password: string }) {
+    this.adminApi.createUser(payload).subscribe({
+      next: (u) => {
+        this.rows = [u, ...this.rows];
+        this.closePanel();
+      },
+      error: (err) => console.error('createUser error', err),
+    });
   }
 
-  // trackBy
-  trackById(_: number, r: UserRow) {
-    return r.id;
+  /** Пример блокировки пользователя */
+  blockUser(id: string) {
+    this.adminApi.blockUser(id).subscribe({
+      next: () =>
+        (this.rows = this.rows.map((r) =>
+          r.id === id ? { ...r, status: 'blocked' } : r
+        )),
+      error: (err) => console.error('blockUser error', err),
+    });
   }
 }

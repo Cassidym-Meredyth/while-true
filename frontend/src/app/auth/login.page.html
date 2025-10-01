@@ -1,0 +1,49 @@
+<section class="auth-shell">
+  <div class="auth-card">
+    <h1 class="auth-title">ЛОГОТИП</h1>
+
+    <form class="auth-form" (ngSubmit)="onSubmit()">
+      <label class="af-field">
+        <span class="af-label">Логин</span>
+        <input
+          class="af-input"
+          name="login"
+          [(ngModel)]="login"
+          (input)="loginError = null"
+          autocomplete="username"
+        />
+        <small class="af-error" *ngIf="loginError">{{ loginError }}</small>
+      </label>
+
+      <label class="af-field">
+        <span class="af-label">Пароль</span>
+        <input
+          class="af-input"
+          type="password"
+          name="password"
+          [(ngModel)]="password"
+          autocomplete="current-password"
+        />
+      </label>
+
+      <div class="af-actions">
+        <label class="remember">
+          <input type="checkbox" [(ngModel)]="remember" name="remember" />
+          <span>Запомнить меня</span>
+        </label>
+
+        <a class="link" href="javascript:void(0)">Забыли пароль?</a>
+      </div>
+
+      <button
+        type="button"
+        class="link-button"
+        [routerLink]="['/auth/register']"
+      >
+        Регистрация
+      </button>
+
+      <button type="submit" class="btn primary wide enter">Войти</button>
+    </form>
+  </div>
+</section>

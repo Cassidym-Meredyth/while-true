@@ -1,0 +1,224 @@
+<section class="foreman-root light">
+  <!-- Верхняя полоса -->
+  <header class="topbar">
+    <div class="brand">ЛОГОТИП</div>
+
+    <div class="top-right">
+      <div class="net" [class.on]="online()">
+        <span class="dot"></span>
+        <span class="text">{{ online() ? 'Онлайн' : 'Офлайн' }}</span>
+      </div>
+
+      <label class="search">
+        <span class="icon">🔎</span>
+        <input placeholder="Search" />
+      </label>
+
+      <div class="icons">
+        <span class="ic">👤</span>
+        <span class="ic">🔔</span>
+        <span class="ic dotc"></span>
+        <span class="ic dotc"></span>
+        <span class="ic dotc"></span>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <nav class="menu">
+        <button
+          class="item"
+          [class.active]="section==='objects'"
+          (click)="goSection('objects')"
+        >
+          <span class="bullet"></span> Объекты
+        </button>
+        <button
+          class="item"
+          [class.active]="section==='schedule'"
+          (click)="goSection('schedule')"
+        >
+          <span class="bullet"></span> График
+        </button>
+        <button
+          class="item"
+          [class.active]="section==='notes'"
+          (click)="goSection('notes')"
+        >
+          <span class="bullet"></span> Замечания
+        </button>
+        <button
+          class="item"
+          [class.active]="section==='checks'"
+          (click)="goSection('checks')"
+        >
+          <span class="bullet"></span> Проверки
+        </button>
+        <button
+          class="item"
+          [class.active]="section==='dicts'"
+          (click)="goSection('dicts')"
+        >
+          <span class="bullet"></span> Справочники
+        </button>
+      </nav>
+
+      <button class="logout" (click)="logout()">Выход</button>
+    </aside>
+
+    <!-- Контент: 3 колонки -->
+    <main class="content">
+      <!-- 1. Объекты -->
+      <section class="col">
+        <h2>Объекты</h2>
+        <div class="filters">
+          <button class="chip">Статус</button>
+          <button class="chip">Город</button>
+          <button class="chip">Ответственные</button>
+          <button class="chip">Даты</button>
+        </div>
+
+        <article class="card object">
+          <header class="obj-h">
+            <div>
+              <div class="ttl">Объект #124 «Парк Победы»</div>
+              <div class="sub">Москва</div>
+            </div>
+            <span class="pill ok">Активен</span>
+          </header>
+
+          <div class="progress">
+            <div class="bar"><span style="width: 70%"></span></div>
+            <div class="peers">
+              <span>В. Иванов</span>
+              <span class="ghost">А. Морозов</span>
+            </div>
+          </div>
+
+          <div class="obj-actions">
+            <button class="btn primary sm">Активировать объект</button>
+          </div>
+        </article>
+
+        <article class="card object">
+          <header class="obj-h">
+            <div>
+              <div class="ttl">Объект #124 «Парк Победы»</div>
+              <div class="sub">Москва</div>
+            </div>
+            <span class="pill warn">Приостановлен</span>
+          </header>
+
+          <div class="progress">
+            <div class="bar"><span style="width: 35%"></span></div>
+            <div class="peers">
+              <span>В. Иванов</span>
+              <span class="ghost">А. Морозов</span>
+            </div>
+          </div>
+
+          <div class="obj-actions">
+            <button class="btn ghost sm">Приостановлен</button>
+          </div>
+        </article>
+
+        <article class="card object">
+          <header class="obj-h">
+            <div>
+              <div class="ttl">Объект #124 «Парк Победы»</div>
+              <div class="sub">Москва</div>
+            </div>
+            <span class="pill ok">Активен</span>
+          </header>
+
+          <div class="progress">
+            <div class="bar"><span style="width: 55%"></span></div>
+            <div class="peers">
+              <span>Е. Смирнова</span>
+              <span class="ghost">А. Морозов</span>
+            </div>
+          </div>
+
+          <div class="obj-actions">
+            <button class="btn primary sm">Активировать объект</button>
+          </div>
+        </article>
+      </section>
+
+      <!-- 2. Уведомления -->
+      <section class="col">
+        <h2>Уведомления</h2>
+        <div class="filters">
+          <button class="chip">Статус</button>
+          <button class="chip">Тип</button>
+          <button class="chip">Даты</button>
+        </div>
+
+        <article class="card notice">
+          <div class="n-top">
+            <div class="n-title">Уведомление</div>
+            <span class="pill neutral">—</span>
+          </div>
+          <div class="n-sub">
+            Москва, объект #114 «Больница»<br />Инспектор Роспотребнадзора<br />В.
+            Иванов
+          </div>
+          <div class="n-actions">
+            <button class="btn primary thin">Перейти</button>
+            <div class="n-time">14:06, 25.09.2025</div>
+          </div>
+        </article>
+
+        <article class="card notice">
+          <div class="n-top">
+            <div class="n-title">Замечание</div>
+            <span class="pill danger">Просрочено</span>
+          </div>
+          <div class="n-sub">
+            Москва, объект #114 «Больница»<br />Инспектор Роспотребнадзора<br />В.
+            Иванов
+          </div>
+          <div class="n-actions">
+            <button class="btn primary thin">Перейти</button>
+            <div class="n-time">14:06, 25.09.2025</div>
+          </div>
+        </article>
+
+        <article class="card notice">
+          <div class="n-top">
+            <div class="n-title">Согласование</div>
+            <span class="pill ok">Активно</span>
+          </div>
+          <div class="n-sub">
+            Москва, объект #114 «Больница»<br />Инспектор Роспотребнадзора<br />В.
+            Иванов
+          </div>
+          <div class="n-actions">
+            <button class="btn primary thin">Перейти</button>
+            <div class="n-time">14:06, 25.09.2025</div>
+          </div>
+        </article>
+      </section>
+
+      <!-- 3. Карта -->
+      <section class="col">
+        <h2>Карта</h2>
+        <div class="filters">
+          <button class="chip">Статус</button>
+          <button class="chip">Город</button>
+          <button class="chip">Ответственные</button>
+          <button class="chip">Даты</button>
+        </div>
+
+        <div class="map">
+          <span class="pin" style="left: 22%; top: 32%"></span>
+          <span class="pin" style="left: 56%; top: 45%"></span>
+          <span class="pin" style="left: 44%; top: 24%"></span>
+          <span class="pin" style="left: 68%; top: 60%"></span>
+          <span class="pin" style="left: 28%; top: 70%"></span>
+        </div>
+      </section>
+    </main>
+  </div>
+</section>

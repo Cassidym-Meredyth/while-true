@@ -1,4 +1,3 @@
-// Типы данных, чтобы в компонентах все было типизировано.
 export type Role = 'Заказчик' | 'Прораб' | 'Инспектор' | 'Админ';
 export type UserStatus = 'Активен' | 'Заблокирован';
 
@@ -8,7 +7,7 @@ export interface UserRow {
   role: Role;
   phone: string;
   status: UserStatus;
-  lastLogin: string; // храню строкой "17 мая" — как в макете. При желании сделаем Date.
+  lastLogin: string; 
 }
 
 export interface DictItem {

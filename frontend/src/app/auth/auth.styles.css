@@ -1,0 +1,142 @@
+.auth-shell {
+  background: #f4f5f7;
+  min-height: 100dvh;
+  padding: 16px;
+  display: grid;
+  place-items: center;
+}
+
+.auth-card {
+  width: min(640px, 96vw); 
+  background: #ffffff;
+  border: 1px solid #eef2f7;
+  border-radius: 16px;
+  padding: 40px 24px 44px;
+  box-shadow: 0 20px 48px rgba(16, 24, 40, 0.06);
+}
+
+/* Заголовок */
+.auth-title {
+  margin: 0 0 14px;
+  text-align: center;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #1f2430;
+  font-size: 26px;
+  text-transform: uppercase;
+  font-style: italic;
+}
+
+.auth-form {
+  margin: 0 auto;
+  width: min(360px, 92vw); 
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+}
+
+/* Поле */
+.af-field {
+  width: 100%;
+  display: grid;
+  gap: 6px;
+}
+.af-label {
+  text-align: center;
+  color: #495268;
+  font-weight: 600;
+}
+.af-input {
+  height: 36px; 
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid #e7ebf3;
+  background: #f5f7fb;
+  outline: none;
+  padding: 0 12px;
+  color: #1f2430;
+}
+
+.af-error {
+  margin-top: -6px;
+  align-self: center;
+  color: #c62828;
+  background: #ffcdcd;
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+/* Низ формы */
+.af-actions {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  align-items: center;
+  margin-top: 2px;
+}
+.remember {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #6b7385;
+}
+.remember input {
+  accent-color: #3b82f6;
+}
+
+.link {
+  color: #2563eb;
+  text-decoration: none;
+}
+.link:hover {
+  text-decoration: underline;
+}
+
+/* Кнопки */
+.btn {
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid #e7ebf3;
+  background: #fff;
+  cursor: pointer;
+  font-weight: 600;
+}
+.btn.primary {
+  background: #3b82f6;
+  color: #fff;
+  border-color: #3b82f6;
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.25);
+}
+.btn.wide {
+  width: 100%;
+}
+.enter {
+  margin-top: 6px;
+}
+
+/* скрытая submit-кнопка, чтобы Enter работал */
+.hidden-submit {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 0;
+  height: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #2563eb;
+  cursor: pointer;
+  font: inherit;
+}
+.link-button:hover {
+  text-decoration: underline;
+}

@@ -1,54 +1,69 @@
-<h2 style="margin: 12px 0 16px 0">Управление пользователями</h2>
+<section class="page page-users">
+  <!-- заголовок | кнопка | поиск -->
+  <div class="toolbar three-cols">
+    <h1>Управление пользователями</h1>
 
-<!-- Toolbar -->
-<div class="toolbar card">
-  <button class="btn primary" (click)="openPanel()">
-    Создать пользователя
-  </button>
-  <div class="spacer"></div>
-  <label class="search input" aria-label="Поиск">
-    <span class="search__icon" aria-hidden="true">🔍</span>
-    <input class="search__field" type="text" placeholder="Поиск" />
-  </label>
-</div>
+    <button class="btn primary create" (click)="openPanel()">
+      Создать пользователя
+    </button>
 
-<!-- GRID: таблица + правая панель -->
-<div class="users-grid" [class.with-panel]="panelOpen">
-  <!-- таблица -->
-  <section class="card table-wrap">
-    <table class="table">
+    <label class="search">
+      <span class="icon">🔎</span>
+      <input type="text" placeholder="Поиск" />
+    </label>
+  </div>
+
+  <!-- Таблица -->
+  <div class="card table">
+    <table class="grid">
       <thead>
         <tr>
-          <th>ФИО ▾</th>
-          <th>Роль ▾</th>
-          <th>Телефон ▾</th>
-          <th>Статус ▾</th>
-          <th>Последний вход ▾</th>
+          <th>ФИО</th>
+          <th>Роль</th>
+          <th>Телефон</th>
+          <th>Статус</th>
+          <th>Последний вход</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let r of rows; trackBy: trackById">
-          <td>{{ r.fio }}</td>
-          <td>
-            <span class="chip" [ngClass]="roleClass(r.role)">{{ r.role }}</span>
-          </td>
-          <td>{{ r.phone }}</td>
-          <td>
-            <span class="badge green" *ngIf="r.status==='Активен'"
-              >Активен</span
-            >
-            <span class="badge red" *ngIf="r.status==='Заблокирован'"
-              >Заблокирован</span
-            >
-          </td>
-          <td class="last">{{ r.last }}</td>
+        <tr>
+          <td>Фамилия И.О.</td>
+          <td><span class="role badge customer">Заказчик</span></td>
+          <td>449-110-13</td>
+          <td><span class="status ok">Активен</span></td>
+          <td>17 мая</td>
+        </tr>
+        <tr>
+          <td>Фамилия И.О.</td>
+          <td><span class="role badge foreman">Прораб</span></td>
+          <td>123-456-78</td>
+          <td><span class="status ok">Активен</span></td>
+          <td>25 августа</td>
+        </tr>
+        <tr>
+          <td>Фамилия И.О.</td>
+          <td><span class="role badge inspector">Инспектор</span></td>
+          <td>111-155-457</td>
+          <td><span class="status ok">Активен</span></td>
+          <td>1 декабря</td>
+        </tr>
+        <tr>
+          <td>Фамилия И.О.</td>
+          <td><span class="role badge admin">Админ</span></td>
+          <td>993-123-12</td>
+          <td><span class="status err">Заблокирован</span></td>
+          <td>23 января</td>
         </tr>
       </tbody>
     </table>
-    <div class="pager">1–4 из 4</div>
-  </section>
 
-  <!-- правая панель -->
+    <div class="pager">
+      <span>1–4 из 4</span>
+      <span>1–4 из 4</span>
+    </div>
+  </div>
+
+  <!-- ПРАВАЯ САЙД-ПАНЕЛЬ -->
   <aside class="card panel" *ngIf="panelOpen">
     <div class="panel-header">
       <h3>Создание пользователя</h3>
@@ -57,23 +72,48 @@
       </button>
     </div>
 
-    <label
-      >ФИО
+    <label class="field">
+      <span class="label">ФИО</span>
       <input class="input" placeholder="Петров В.В." />
     </label>
 
-    <div class="radio">
-      <label><input type="radio" name="c" checked /> Телефон</label>
-      <label><input type="radio" name="c" /> Почта</label>
+    <div class="field radios">
+      <span class="label">Контакты</span>
+      <label class="radio-chip">
+        <input
+          type="radio"
+          name="c"
+          [checked]="contact==='phone'"
+          (change)="setContact('phone')"
+        />
+        <span>Телефон</span>
+      </label>
+      <label class="radio-chip">
+        <input
+          type="radio"
+          name="c"
+          [checked]="contact==='email'"
+          (change)="setContact('email')"
+        />
+        <span>Почта</span>
+      </label>
     </div>
 
-    <label
-      >Телефон
-      <input class="input" placeholder="+7 999 999 99 99" />
-    </label>
+    <ng-container *ngIf="contact==='phone'; else emailField">
+      <label class="field">
+        <span class="label">Телефон</span>
+        <input class="input" placeholder="+7 999 999 99 99" />
+      </label>
+    </ng-container>
+    <ng-template #emailField>
+      <label class="field">
+        <span class="label">Почта</span>
+        <input class="input" type="email" placeholder="user@example.com" />
+      </label>
+    </ng-template>
 
-    <label
-      >Роль
+    <label class="field select">
+      <span class="label">Роль</span>
       <select class="input">
         <option>Админ</option>
         <option>Инспектор</option>
@@ -82,16 +122,14 @@
       </select>
     </label>
 
-    <label
-      >Пароль
-      <input class="input" type="password" value="•••••••" />
+    <label class="field">
+      <span class="label">Пароль</span>
+      <input class="input" type="password" value="********" />
     </label>
 
-    <button class="btn primary" style="width: 100%; margin-top: 8px">
-      Сохранить
-    </button>
+    <button class="btn primary wide">Сохранить</button>
     <button class="btn ghost" type="button" (click)="closePanel()">
       Отмена
     </button>
   </aside>
-</div>
+</section>
