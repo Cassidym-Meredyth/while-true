@@ -1,5 +1,5 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/bin/sh
+set -eu
 
 # Ожидаем, что docker-compose прокинет эти переменные из .env
 : "${POSTGRES_USER:?POSTGRES_USER is required}"
