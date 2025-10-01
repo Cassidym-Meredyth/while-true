@@ -23,7 +23,7 @@ src/
 │   │   ├── api.tokens.ts
 │   │   ├── auth.interceptor.ts
 │   │   └── models.ts
-│   ├── pages    # Страницы приложения 
+│   ├── pages                                     # Страницы приложения 
 │   │   ├── admin-users                           # Админская оболочка и экран "Пользователи"
 │   │   │   ├── admin-shell.component.css
 │   │   │   ├── admin-shell.component.html
@@ -39,17 +39,17 @@ src/
 │   │   │   ├── dicts.page.css
 │   │   │   ├── dicts.page.html
 │   │   │   └── dicts.page.ts
-│   │   ├── foreman  # Страница прораба
+│   │   ├── foreman                               # Страница прораба
 │   │   │   ├── foreman.page.css
 │   │   │   ├── foreman.page.html
 │   │   │   └── foreman.page.ts
-│   │   └── inspector # Страница инспектора
+│   │   └── inspector                             # Страница инспектора
 │   │       ├── inspector.page.css
 │   │       ├── inspector.page.html
 │   │       └── inspector.page.ts
-│   └── shared                                     # Переиспользуемые компоненты (баннер оффлайна и т.п.)
+│   └── shared                                    # Переиспользуемые компоненты (баннер оффлайна и т.п.)
 │       └── offline-banner.component.ts
-├── assets                                         # иконки, картинки
+├── assets                                        # иконки, картинки
 │   └── admin.png
 ├── global_styles.css
 ├── index.html
