@@ -1,7 +1,6 @@
 <section class="admin-root light">
   <header class="admin-header">
     <div class="header-left"></div>
-
     <div class="header-right">
       <span class="dot"></span>
       <span class="dot"></span>
@@ -32,7 +31,8 @@
         <img src="/assets/admin.png" alt="Админ" />
       </div>
 
-      <button class="logout">Выход</button>
+      <!-- добавили обработчик клика -->
+      <button class="logout" (click)="logout()">Выход</button>
     </aside>
 
     <main class="admin-content">
