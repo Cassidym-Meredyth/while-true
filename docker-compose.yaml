@@ -53,10 +53,10 @@ services:
     command: >
       start-dev --import-realm --hostname-strict=false
     ports:
-      - "8080:8080"
+      - "8082:8080"
     networks: [icj-net]
     volumes:
-      - keycloak_data:/opt/keytcloak/data
+      - keycloak_data:/opt/keycloak/data
       - ./backend/KeyCloak/icj.json:/opt/keycloak/data/import/icj.json:ro
     depends_on:
       postgres:
@@ -65,7 +65,7 @@ services:
   backend:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile_back
     container_name: icj-backend
     env_file: .env
     ports:
@@ -91,12 +91,32 @@ services:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@example.com}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
     ports:
-      - "8082:80"
+      - "8084:80"
     networks: [icj-net]
     depends_on:
       postgres:
         condition: service_healthy
 
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile_front
+      args:
+        API_BASE_URL: /api
+    image: icj-frontend:latest
+    container_name: icj-frontend
+    ports: 
+      - "8085:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks: [icj-net]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost/health || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 15
+      start_period: 15s
 
 
   mongo:
