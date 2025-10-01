@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { AuthService } from './auth.service';
 
 @Component({
   standalone: true,
@@ -14,35 +15,47 @@ export class LoginPage {
   login = '';
   password = '';
   remember = false;
-
-  // для подсветки ошибки под логином (см. макет)
   loginError: string | null = null;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private auth: AuthService) {}
 
   onSubmit() {
-    const who = this.login.trim().toLowerCase();
-
-    if (['админ', 'admin', 'адмін'].includes(who)) {
-      this.router.navigateByUrl('/admin/users');
-      return;
-    }
-
-    // задел под будущие роли (когда подключим страницы):
-    if (who === 'прораб') {
-      this.router.navigateByUrl('/foreman'); // будет страница прораба
-      return;
-    }
-    if (who === 'инспектор') {
-      this.router.navigateByUrl('/inspector'); // будет страница инспектора
-      return;
-    }
-    if (who === 'клиент' || who === 'заказчик') {
-      this.router.navigateByUrl('/customer'); // будет страница заказчика
-      return;
-    }
-
-    // иначе — показываем ошибку под инпутом
-    this.loginError = 'Такого логина не существует';
+    this.auth.login({ login: this.login, password: this.password }).subscribe({
+      next: (user) => {
+        const byRole: Record<string, string> = {
+          admin: '/admin/users',
+          customer: '/customer',
+          foreman: '/foreman',
+          inspector: '/inspector',
+        };
+        this.router.navigateByUrl(byRole[user.role] ?? '/auth/login');
+      },
+      error: () => {
+        const who = this.login.trim().toLowerCase();
+        const routeByLogin: Record<string, string> = {
+          // admin
+          admin: '/admin/users',
+          админ: '/admin/users',
+          адмін: '/admin/users',
+          // customer
+          customer: '/customer',
+          client: '/customer',
+          клиент: '/customer',
+          заказчик: '/customer',
+          // foreman
+          foreman: '/foreman',
+          прораб: '/foreman',
+          // inspector
+          inspector: '/inspector',
+          инспектор: '/inspector',
+        };
+        const target = routeByLogin[who];
+        if (target) {
+          this.router.navigateByUrl(target);
+        } else {
+          this.loginError = 'Такого логина не существует';
+        }
+      },
+    });
   }
 }

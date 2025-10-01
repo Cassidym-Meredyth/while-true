@@ -35,9 +35,14 @@
         <a class="link" href="javascript:void(0)">Забыли пароль?</a>
       </div>
 
-      <a class="link" [routerLink]="['/auth/register']">Регистрация</a>
+      <button
+        type="button"
+        class="link-button"
+        [routerLink]="['/auth/register']"
+      >
+        Регистрация
+      </button>
 
-      <!-- видимая синяя кнопка входа -->
       <button type="submit" class="btn primary wide enter">Войти</button>
     </form>
   </div>

@@ -1,11 +1,10 @@
-// src/app/app.routes.ts
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  // стартуем с авторизации
+  // старт с авторизации
   { path: '', pathMatch: 'full', redirectTo: 'auth/login' },
 
-  // AUTH: логин и регистрация
+  // AUTH
   {
     path: 'auth',
     children: [
@@ -23,7 +22,7 @@ export const routes: Routes = [
     ],
   },
 
-  // ADMIN: оставляем как было (оболочка + дочерние экраны)
+  // ADMIN (без изменений)
   {
     path: 'admin',
     loadComponent: () =>
@@ -47,6 +46,24 @@ export const routes: Routes = [
     ],
   },
 
-  // позже сюда спокойно добавим foreman / inspector / customer
+  // CUSTOMER 
+  {
+    path: 'customer',
+    loadComponent: () =>
+      import('./pages/customer/customer.page').then((m) => m.CustomerPage),
+  },
+  // foreman 
+  {
+    path: 'foreman',
+    loadComponent: () =>
+      import('./pages/foreman/foreman.page').then((m) => m.ForemanPage),
+  },
+    // inspector 
+  {
+    path: 'inspector',
+    loadComponent: () =>
+      import('./pages/inspector/inspector.page').then((m) => m.InspectorPage),
+  },
+
   { path: '**', redirectTo: 'auth/login' },
 ];

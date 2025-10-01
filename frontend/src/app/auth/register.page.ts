@@ -18,12 +18,10 @@ export class RegisterPage {
   confirm = '';
   remember = false;
 
-  // макетные ошибки для показа под нужным полем
   emailError: string | null = null;
   phoneError: string | null = null;
   usernameError: string | null = null;
 
-  // примеры триггеров ошибок (можешь заменить своей валидацией)
   triggerEmailError() {
     this.emailError = 'Такой почты не существует';
   }

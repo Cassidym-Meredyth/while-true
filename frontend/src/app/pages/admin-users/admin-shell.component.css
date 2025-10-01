@@ -1,4 +1,3 @@
-/* ======= LIGHT THEME LAYOUT (only inside admin) ======= */
 .admin-root.light {
   --bg: #f7f9fc;
   --panel: #ffffff;
@@ -114,7 +113,14 @@
   overflow: auto;
 }
 
-/* ...оставь остальной файл как есть... */
-
-.nav .bullet{ width:10px; height:10px; border-radius:50%; background:#d7deeb; display:inline-block; }
-.nav.active .bullet{ background:#3b82f6; box-shadow:0 0 0 3px rgba(59,130,246,.18); }
+.nav .bullet {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #d7deeb;
+  display: inline-block;
+}
+.nav.active .bullet {
+  background: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
+}

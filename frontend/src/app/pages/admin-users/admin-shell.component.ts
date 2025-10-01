@@ -29,8 +29,6 @@ export class AdminShellComponent {
 
   // ← Кнопка "Выход"
   logout() {
-    // минимальный "выход": просто уводим на страницу логина.
-    // (если появится реальный AuthService — сюда добавим очистку токенов)
     this.router.navigateByUrl('/auth/login');
   }
 }
