@@ -2,9 +2,59 @@
 
 
 ## Дерево проекта
-
-![](ggg.png)
-
+```
+src/
+└─ ├── app                                        # Корневой компонент-приложение
+│   ├── app.component.css
+│   ├── app.component.html
+│   ├── app.component.ts
+│   ├── app.config.ts                             # Провайдеры (Router, HttpClient, интерсепторы, BASE_URL)
+│   ├── app.routes.ts                             # Маршрутизация (lazy standalone компоненты)
+│   ├── auth                                      # Авторизация/регистрация + стили
+│   │   ├── auth.service.ts
+│   │   ├── auth.styles.css
+│   │   ├── login.page.html
+│   │   ├── login.page.ts
+│   │   ├── register.page.html
+│   │   └── register.page.ts
+│   ├── core                                      # Базовая инфраструктура: HTTP, токены, модели, API
+│   │   ├── admin.api.ts
+│   │   ├── api.service.ts
+│   │   ├── api.tokens.ts
+│   │   ├── auth.interceptor.ts
+│   │   └── models.ts
+│   ├── pages    # Страницы приложения 
+│   │   ├── admin-users                           # Админская оболочка и экран "Пользователи"
+│   │   │   ├── admin-shell.component.css
+│   │   │   ├── admin-shell.component.html
+│   │   │   ├── admin-shell.component.ts
+│   │   │   ├── admin-users.page.css
+│   │   │   ├── admin-users.page.html
+│   │   │   └── admin-users.page.ts
+│   │   ├── customer                              # Страница клиента/заказчика
+│   │   │   ├── customer.page.css
+│   │   │   ├── customer.page.html
+│   │   │   └── customer.page.ts
+│   │   ├── dicts                                 # Страница "Справочники" (админ)
+│   │   │   ├── dicts.page.css
+│   │   │   ├── dicts.page.html
+│   │   │   └── dicts.page.ts
+│   │   ├── foreman  # Страница прораба
+│   │   │   ├── foreman.page.css
+│   │   │   ├── foreman.page.html
+│   │   │   └── foreman.page.ts
+│   │   └── inspector # Страница инспектора
+│   │       ├── inspector.page.css
+│   │       ├── inspector.page.html
+│   │       └── inspector.page.ts
+│   └── shared                                     # Переиспользуемые компоненты (баннер оффлайна и т.п.)
+│       └── offline-banner.component.ts
+├── assets                                         # иконки, картинки
+│   └── admin.png
+├── global_styles.css
+├── index.html
+└── main.ts
+```
 ---
 
 ### `auth/` — авторизация
