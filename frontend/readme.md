@@ -3,61 +3,7 @@
 
 ## Дерево проекта
 
-src/
-└─ app/
-├─ auth/ # Авторизация/регистрация и их стили
-│ ├─ auth.service.ts
-│ ├─ auth.styles.css
-│ ├─ login.page.html
-│ ├─ login.page.ts
-│ ├─ register.page.html
-│ └─ register.page.ts
-│
-├─ core/ # Инфраструктура: HTTP-клиент, токены DI, перехватчики, модели, API
-│ ├─ admin.api.ts
-│ ├─ api.service.ts
-│ ├─ api.tokens.ts
-│ ├─ auth.interceptor.ts
-│ └─ models.ts
-│
-├─ pages/ # Основные страницы - админ, заказчик, справочники (от админа), прораб, инспектор
-│ ├─ admin-users/
-│ │ ├─ admin-shell.component.css
-│ │ ├─ admin-shell.component.html
-│ │ ├─ admin-shell.component.ts
-│ │ ├─ admin-users.page.css
-│ │ ├─ admin-users.page.html
-│ │ └─ admin-users.page.ts
-│ ├─ customer/
-│ │ ├─ customer.page.css
-│ │ ├─ customer.page.html
-│ │ └─ customer.page.ts
-│ ├─ dicts/
-│ │ ├─ dicts.page.css
-│ │ ├─ dicts.page.html
-│ │ └─ dicts.page.ts
-│ ├─ foreman/
-│ │ ├─ foreman.page.css
-│ │ ├─ foreman.page.html
-│ │ └─ foreman.page.ts
-│ └─ inspector/
-│ ├─ inspector.page.css
-│ ├─ inspector.page.html
-│ └─ inspector.page.ts
-│
-├─ shared/ # Переиспользуемые компоненты
-│ └─ offline-banner.component.ts
-│
-├─ app.component.css
-├─ app.component.html
-├─ app.component.ts
-├─ app.config.ts # Провайдеры Router/HTTP, API_BASE_URL, интерсепторы
-├─ app.routes.ts # Маршрутизация
-│
-└─ assets/
-├─ admin.png
-└─ global_styles.css
-
+![](ggg.png)
 
 ---
 
