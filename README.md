@@ -65,3 +65,8 @@ docker-compose up --build
 
 ---
 
+# Просмотр базы данных
+1. Необходимо зайти в pgadmin (контейнер icj-pgadmin) и войти в ЛК (admin@example.com и admin)
+2. Servers => Register => Server:
+    - General => Name - icj-DB
+    - Conneciton => Host name/address - icj-DB; Port - 5432; Username - postgres; Password - password; Save
