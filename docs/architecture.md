@@ -1,7 +1,7 @@
 # Архитектура (MVP)
 
 ## Обзор
-Кратко: SPA/PWA → FastAPI → PostgreSQL+PostGIS/S3/Keycloak + OCR.
+Кратко: SPA/PWA => FastAPI => PostgreSQL+PostGIS/S3/Keycloak + OCR.
 
 ## Диаграмма (mermaid)
 ```mermaid

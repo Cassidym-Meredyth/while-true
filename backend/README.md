@@ -21,6 +21,7 @@ backend
         ├───router.go
         │
         └───handlers
+            ├───auth.go
             ├───projects.go
             └───users.go
 
