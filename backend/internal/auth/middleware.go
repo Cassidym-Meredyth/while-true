@@ -36,7 +36,7 @@ type verifierHolder struct {
 	err      error
 }
 
-func NewOIDCMiddleware(issuer, _ string, _ bool) gin.HandlerFunc {
+func NewOIDCMiddleware(issuer, audience string, _ bool) gin.HandlerFunc {
 	var vh verifierHolder
 
 	initVerifier := func(ctx context.Context) (*oidc.IDTokenVerifier, error) {
@@ -46,6 +46,7 @@ func NewOIDCMiddleware(issuer, _ string, _ bool) gin.HandlerFunc {
 				vh.err = err
 				return
 			}
+			// Проверяем подпись и iss. client_id проверять не будем (токен – access)
 			cfg := &oidc.Config{
 				SkipClientIDCheck: true,
 			}
@@ -57,6 +58,7 @@ func NewOIDCMiddleware(issuer, _ string, _ bool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		parts := strings.SplitN(c.GetHeader("Authorization"), " ", 2)
 		if len(parts) != 2 || !strings.EqualFold(parts[0], "Bearer") {
+			c.Header("WWW-Authenticate", `Bearer realm="icj"`)
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "missing bearer token"})
 			return
 		}
@@ -70,6 +72,7 @@ func NewOIDCMiddleware(issuer, _ string, _ bool) gin.HandlerFunc {
 
 		idToken, err := verifier.Verify(c, raw)
 		if err != nil {
+			c.Header("WWW-Authenticate", `Bearer error="invalid_token"`)
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "token verify failed", "detail": err.Error()})
 			return
 		}
@@ -80,6 +83,31 @@ func NewOIDCMiddleware(issuer, _ string, _ bool) gin.HandlerFunc {
 			return
 		}
 
+		// ==== ЖЁСТКАЯ ПРОВЕРКА AUDIENCE ====
+		// В Keycloak aud может быть строкой или массивом. go-oidc не разворачивает его в структуру,
+		// поэтому читаем «сырые» claims:
+		var rawMap map[string]any
+		if err := idToken.Claims(&rawMap); err == nil {
+			okAud := false
+			switch v := rawMap["aud"].(type) {
+			case string:
+				okAud = (v == audience)
+			case []any:
+				for _, it := range v {
+					if s, _ := it.(string); s == audience {
+						okAud = true
+						break
+					}
+				}
+			}
+			if audience != "" && !okAud {
+				c.Header("WWW-Authenticate", `Bearer error="invalid_token", error_description="aud mismatch"`)
+				c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "audience mismatch"})
+				return
+			}
+		}
+
+		// Собираем роли
 		roleSet := map[string]struct{}{}
 		for _, r := range cl.RealmAccess.Roles {
 			roleSet[r] = struct{}{}

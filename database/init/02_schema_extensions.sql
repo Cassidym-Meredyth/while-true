@@ -1,5 +1,13 @@
--- Расширения (PostGIS уже установлен в образе)
+-- Схема приложения
+CREATE SCHEMA IF NOT EXISTS app AUTHORIZATION CURRENT_USER;
+
+-- Расширения (часть может быть уже включена в образ postgis)
 CREATE EXTENSION IF NOT EXISTS postgis;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE EXTENSION IF NOT EXISTS pg_trgm;
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
 CREATE EXTENSION IF NOT EXISTS citext;
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+
+
+-- Права на схему
+GRANT USAGE ON SCHEMA app TO CURRENT_USER;

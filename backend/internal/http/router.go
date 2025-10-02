@@ -10,6 +10,8 @@ import (
 
 	"github.com/Cassidym-Meredyth/while-true/backend/internal/auth"
 	"github.com/Cassidym-Meredyth/while-true/backend/internal/http/handlers"
+
+	"github.com/gin-contrib/cors"
 )
 
 type Options struct {
@@ -23,13 +25,21 @@ func NewRouter(opt Options) *gin.Engine {
 	r := gin.Default()
 	_ = r.SetTrustedProxies(nil)
 
+	// CORS
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:8085"}, // адрес фронта
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Authorization", "Content-Type", "Accept", "Origin"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
+
 	// healthz
 	r.GET("/healthz", func(c *gin.Context) { c.String(http.StatusOK, "ok") })
 	r.GET("/db/healthz", func(c *gin.Context) {
-		// берём контекст запроса и оборачиваем таймаутом
 		ctx, cancel := context.WithTimeout(c.Request.Context(), time.Second)
 		defer cancel()
-
 		if err := opt.DB.Ping(ctx); err != nil {
 			c.JSON(http.StatusServiceUnavailable, gin.H{"ok": false, "error": err.Error()})
 			return
@@ -37,12 +47,21 @@ func NewRouter(opt Options) *gin.Engine {
 		c.JSON(http.StatusOK, gin.H{"ok": true})
 	})
 
-	// handlers
+	// ===== handlers =====
 	prj := &handlers.Projects{DB: opt.DB}
 	usr := &handlers.Users{DB: opt.DB}
+	authH := &handlers.Auth{DB: opt.DB} // ← ДОБАВИЛИ: хэндлер авторизации
 
-	// защищённые эндпоинты
+	// ----- ПУБЛИЧНЫЕ РОУТЫ -----
+	// фронт шлёт POST /auth/login с {login,password}
+	r.POST("/auth/login", authH.Login) // ← ДОБАВИЛИ
+
+	// (если понадобится регистрация через бэк, тут же можно добавить:)
+	// r.POST("/auth/register", authH.Register)
+
+	// ----- ЗАЩИЩЁННЫЕ РОУТЫ (OIDC) -----
 	oidc := auth.NewOIDCMiddleware(opt.KeycloakIssuer, opt.KeycloakAudience, false)
+
 	api := r.Group("/api", oidc)
 	{
 		api.GET("/projects", prj.List)
@@ -51,7 +70,14 @@ func NewRouter(opt Options) *gin.Engine {
 		api.GET("/users", usr.List)
 	}
 
-	// публичные (удобно для локальных тестов, отключай в проде)
+	admin := r.Group("/admin", oidc)
+	{
+		// admin.Use(auth.RequireRoles("admin")) // при необходимости
+		admin.GET("/users", usr.List)
+		admin.POST("/users", usr.Create)
+	}
+
+	// ----- ПУБЛИЧНЫЕ ДЛЯ ЛОКАЛКИ (по флагу) -----
 	if opt.PublicRoutes {
 		pub := r.Group("/pub")
 		{

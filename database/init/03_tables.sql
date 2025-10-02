@@ -70,3 +70,52 @@ CREATE TABLE app.attachment (
   uploaded_at timestamptz NOT NULL DEFAULT now()
 );
 CREATE INDEX attachment_owner_idx ON app.attachment(owner_table, owner_id);
+
+-- Пользователи
+CREATE TABLE IF NOT EXISTS app.user_account (
+  id         uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  kc_sub     uuid UNIQUE NOT NULL,            -- sub из Keycloak (у тебя он UUID)
+  username   citext UNIQUE NOT NULL,
+  email      citext,
+  full_name  text,
+  role_id    integer,                         -- для удобного JOIN на основную роль
+  created_at timestamptz NOT NULL DEFAULT now(),
+  updated_at timestamptz NOT NULL DEFAULT now()
+);
+
+-- Роли (справочник)
+CREATE TABLE IF NOT EXISTS app.user_role (
+  id    serial PRIMARY KEY,
+  code  text NOT NULL UNIQUE,                 -- 'admin','foreman','inspector','customer'
+  title text NOT NULL
+);
+
+-- Связка многие-ко-многим (если одному пользователю нужно несколько ролей)
+CREATE TABLE IF NOT EXISTS app.user_account_role (
+  user_id uuid    NOT NULL REFERENCES app.user_account(id) ON DELETE CASCADE,
+  role_id integer NOT NULL REFERENCES app.user_role(id)    ON DELETE CASCADE,
+  PRIMARY KEY (user_id, role_id)
+);
+
+-- Индексы
+CREATE INDEX IF NOT EXISTS idx_user_account_kc_sub    ON app.user_account(kc_sub);
+CREATE INDEX IF NOT EXISTS idx_user_account_username  ON app.user_account(username);
+CREATE INDEX IF NOT EXISTS idx_user_role_code         ON app.user_role(code);
+
+-- Сид базовых ролей
+INSERT INTO app.user_role (code, title) VALUES
+  ('admin','Administrator'),
+  ('foreman','Foreman'),
+  ('inspector','Inspector'),
+  ('customer','Customer')
+ON CONFLICT (code) DO NOTHING;
+
+-- Права (если контейнер инициализируется под postgres)
+ALTER TABLE app.user_account       OWNER TO app_user;
+ALTER TABLE app.user_role          OWNER TO app_user;
+ALTER TABLE app.user_account_role  OWNER TO app_user;
+
+GRANT USAGE ON SCHEMA app TO app_user;
+GRANT SELECT,INSERT,UPDATE,DELETE ON app.user_account      TO app_user;
+GRANT SELECT,INSERT,UPDATE,DELETE ON app.user_role         TO app_user;
+GRANT SELECT,INSERT,UPDATE,DELETE ON app.user_account_role TO app_user;

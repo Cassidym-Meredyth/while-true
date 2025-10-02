@@ -101,8 +101,8 @@ func (h *Users) List(c *gin.Context) {
 				u.email,
 				u.full_name,
 				u.active,
-				COALESCE(u.kc_sub, '') AS kc_sub,           -- ← чтобы не было NULL
-				COALESCE(string_agg(ur.role_code, ',' ORDER BY ur.role_code), '') AS roles_csv
+				COALESCE(u.kc_sub::text, '') AS kc_sub,           -- ← чтобы не было NULL
+				COALESCE(string_agg(ur.code, ',' ORDER BY ur.code), '') AS roles_csv
 		FROM app.user_account u
 		LEFT JOIN app.user_role ur ON ur.user_id = u.id
 		GROUP BY u.id
